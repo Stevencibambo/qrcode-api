@@ -21,7 +21,6 @@ class Encode extends Component{
             var resp = response.json()
             console.log(resp)})
     }
-
     handleCancelClick = () => {
         return <Redirect path="/" />
     }
