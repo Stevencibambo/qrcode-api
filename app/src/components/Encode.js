@@ -3,17 +3,14 @@ import {Redirect} from 'react-router-dom';
 import Qrcode from './Qrcode';
 import EncodeForm from './EncodeForm';
 import DownloadForm from './DownloadForm';
+import { saveAs } from 'file-saver';
 
 class Encode extends Component{
-
     state = {
-        status: "",
-        message: "",
-        data: "",
+        data: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAACdElEQVR4nO3ZS46DMAyA4UgcgCNx9R6JA0TKgONXIHRGXXb+LNpC/bGyHMeU9uF6FSQSiUQikcgvkkXX0sq2L03vrefXftzeWi39l6wNibxLuWiObqG1pEcikTMpSXb+91rltkYdq3r2LU0TFIl8I3vdeq1HaP+QZ+z6gUT+LmPbk3tyaR9I5DspXyYl57Runc8o65/2T+S/lrq0G3/4iMYKibzKtM5OStItEu+IsvgUh0SOctjidFNszS+jxbpUMCTSs6+WiIoAvezZZ8c6JHIqI+cioOrOeFlI5ETG3veybS9acuX2LxI5lUNqpR3PB012oqsukMgsfRdsOo4sRaOsiZIUlPWwfyL/tyybzR/jUvNQalm8t7U/kMiLlNTqAa2W9KuPBqS0TSsYEunZ5+/S4jDXbKjU7+2eh0jkTeq7EW/E8wZYrbRZfUMiJzLlV7PJUu6p+njJXpVsSOSkk7Idb+ia/Bk+M9BgJPIu98U7b3uGlrFiW6E1W0jkRMaOp2VsaKLi4S1PD5DIQVqm9STTrbBad2UV7L4LIpEqPSASL4pX09HAYnmIRD5IDfWD22UcObRTSORE6igpvY9djFub/lDBkEgfCJx1yo9w0qFvfrbzcQESOZH5HBczSeu8+6VWMCRyKntAT7d+2waTvaDZzGA6nUQih1V0gDQ5zPV/kcipLLqiddJqFfMBy82KRE6lXDQvVGlJY1UWK3JI5JO0pjsC8tluHYpXQyLfyDQGuMwptTl/zD4k0rLP5wN5MFm1nuWGHYkcpHxF12Tx6VinFewy4UYiJ934ogOkmFOmedJ6rWBIZPtwIZFIJBKJRH6J/AH3cj+7TydwJAAAAABJRU5ErkJggg==",
     }
     handleFormSubmit = (form) => {
-        var resp = this.generateQrcode(form);
-        console.log(resp);
+        this.generateQrcode(form);
     }
     generateQrcode = (data) => {
         fetch("http://localhost:8000/api/v1/encode/", {
@@ -23,13 +20,9 @@ class Encode extends Component{
             },
             body: JSON.stringify(data)
         })
-        .then((response) => {
-
-            var resp = response.json()
-            console.log(resp)
-            this.setState({data: resp.data})
-            console.log(this.state.data)
-            })
+        .then( response => response.json() )
+        .then( json => this.setState({data: 'data:image/png;base64,' + json}) )
+        .catch( error => console.error('error:', error) );
     }
     handleCancelClick = () => {
         return <Redirect path="/" />
@@ -48,9 +41,9 @@ class Encode extends Component{
 
                             <hr />
                             <h1 className="text-center">
-                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKAQAAAABTUiuoAAABVUlEQVR4nO3ZS66DMAxAUUssgCWxdZbUBSClxJ+YPl4lRo0H14O0hJNOLAeHSnsau0ChUCgUWoOKx9Jkey3nhA0xvUFLUb3owLysLRaNu9A6tCcxc7qLX3qyoTWpTvsALU8vFQitSvXDEntI2x/tr9BJ9LMhieFB7wL9Pf2IQzS7nuwR0EL0LL5mdXeMdPZv63FLLHQytV2y9YLUe6OR1PMZtCC1WPsjbuyhXxILnUj/tPiaTm8foeVou26azQ7S57DEDWgp2svQB9Gcek1aQW7QSjQO0rpp9onLI+7LmRs6jUbJqfJFkfHb0xA6mYo1H1mB2Z/IWAQtQjPilaKI9/6Sjz1oDRopzIP0eFPV7mUInUz1Ypycc+6fioXOp/HnSnaOFvYb0JrU2sc9lL0FgRalVoujacwBWojqR9Jz4fUAAC1FPe45zZ0TWoU+CSgUCoVC59M3oCOSlCaWdMUAAAAASUVORK5CYII=" className="img-thumbnail w-100" alt="Qr code"/>
+                                <img src={this.state.data} className="img-thumbnail w-100" alt="Qr code"/>
                             </h1>
-                            <DownloadForm data={this.state.data} onFormSubmit={this.handleFormSubmit} />
+                            <button className="btn btn-primary" onClick={ saveAs( this.state.data, 'qrcode.png') }>Download</button>
                          </div>
                     </div>
                 </div>

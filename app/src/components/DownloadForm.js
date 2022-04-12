@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
+import { saveAs } from 'file-saver';
 
 class DownloadForm extends Component{
 
-    state = {
-        data: this.props.data,
+    const downloadImage = (image_url, file_name) => {
+      saveAs(image_url, file_name)
     }
     render(){
         return(
-        <form>
-
-        </form>);
+        <>
+        <Button onClick={downloadImage()}>Download!</Button>
+        </>);
     }
 }
 export default DownloadForm

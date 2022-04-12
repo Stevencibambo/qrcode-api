@@ -34,7 +34,7 @@ def encode(request):
             "created_date": datetime.now(),
             "data": img_as_str,
         }
-    return Response(response_object, status=status.HTTP_200_OK)
+    return Response(img_as_str, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
