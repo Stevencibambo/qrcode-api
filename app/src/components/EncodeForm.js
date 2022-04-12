@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 
 class EncodeForm extends Component {
-
     state = {
         content: this.props.content || '',
         logo: this.props.logo || '',
