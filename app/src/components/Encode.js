@@ -2,7 +2,7 @@ import {Component} from 'react';
 import {Redirect} from 'react-router-dom';
 import Qrcode from './Qrcode';
 import EncodeForm from './EncodeForm';
-import DownloadForm from './DownloadForm';
+import Download from './Download';
 import { saveAs } from 'file-saver';
 
 class Encode extends Component{
@@ -43,7 +43,7 @@ class Encode extends Component{
                             <h1 className="text-center">
                                 <img src={this.state.data} className="img-thumbnail w-100" alt="Qr code"/>
                             </h1>
-                            <button className="btn btn-primary" onClick={ saveAs( this.state.data, 'qrcode.png') }>Download</button>
+                            <Download image={this.state.data}>Download</Download>
                          </div>
                     </div>
                 </div>

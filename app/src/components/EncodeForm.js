@@ -57,7 +57,7 @@ class EncodeForm extends Component {
                     </div>
                     <div className="form-group d-flex justify-content-between mt-4">
                         <button type="submit" className="btn btn-md btn-primary">Generate</button>
-                        <button type="submit" className="btn btn-md btn-secondary" onClick={this.props.onCancelClick}>Cancel</button>
+                        <button type="button" className="btn btn-md btn-secondary" onClick={this.props.onCancelClick}>Cancel</button>
                     </div>
                 </form>
         )
